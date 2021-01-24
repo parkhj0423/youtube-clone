@@ -22,7 +22,7 @@ function SideVideo() {
 
 
         return (
-        <div key={index} style={{ display:'flex', marginBottom:'1rem', padding:'0 2rem'}}>
+        <div key={index} style={{ display:'flex', marginBottom:'1rem', padding:'0 1rem'}}>
             {/* 왼쪽 동영상 이미지 부분 */}
             <div style={{width:'40%',marginRight:'1rem'}}>
                 <a href={`/video/${video._id}`}>
@@ -38,8 +38,6 @@ function SideVideo() {
                     <span>{minutes} : {seconds < 10 ? `0${seconds}` : seconds}</span>
                 </a>
             </div>
-
-            
          </div>
         )
     })

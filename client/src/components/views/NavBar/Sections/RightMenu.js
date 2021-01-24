@@ -13,6 +13,7 @@ function RightMenu(props) {
   const logoutHandler = () => {
     axios.get(`/api/users/logout`).then(response => {
       if (response.status === 200) {
+        window.localStorage.setItem('userId','')
         props.history.push("/login");
       } else {
         alert('Log Out Failed')
@@ -35,9 +36,6 @@ function RightMenu(props) {
   } else {
     return (
       <Menu props={props.mode} style={{display:'flex'}}>
-        <Menu.Item key="setting:3">
-          <a href="/video/upload">Upload Video</a>
-          </Menu.Item>
         <Menu.Item key="logout">
           <a onClick={logoutHandler}>Logout</a>
         </Menu.Item>

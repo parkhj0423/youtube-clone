@@ -2,28 +2,31 @@ import React,{useEffect, useState} from 'react'
 import {Row,Col, List, Avatar} from 'antd';
 import axios from 'axios';
 import SideVideo from './Sections/SideVideo'
+import Subscribe from './Sections/Subscribe';
 
 
-function VideoDetailPage(props) {
-//이런식으로 url에 나타난 videoId를 가져올 수 있는 이유는 app.js 에 /video/:videoId 로 작성했기 때문
-const videoId = props.match.params.videoId
-    const variable = {
-        videoId: videoId
-    }
-    
-    const [VideoDetail, setVideoDetail] = useState([])
+function VideoDetailPage(props) {  
 
-    useEffect(() => {
-        axios.post('/api/video/getVideoDetail',variable)
-        .then(response => {
-            if(response.data.success){
-                console.log(response.data.videoDetail.filePath);
-                setVideoDetail(response.data.videoDetail);
-            }else{
-                alert('비디오 정보를 가져오기를 실패했습니다!')
-            }
-        })
-    }, [])
+
+    //이런식으로 url에 나타난 videoId를 가져올 수 있는 이유는 app.js 에 /video/:videoId 로 작성했기 때문
+    const videoId = props.match.params.videoId
+        const variable = {
+            videoId: videoId
+        }
+        
+        const [VideoDetail, setVideoDetail] = useState([])
+
+        useEffect(() => {
+            axios.post('/api/video/getVideoDetail',variable)
+            .then(response => {
+                if(response.data.success){
+                    console.log(response.data.videoDetail.filePath);
+                    setVideoDetail(response.data.videoDetail);
+                }else{
+                    alert('비디오 정보를 가져오기를 실패했습니다!')
+                }
+            })
+        }, [])
 
 
 
@@ -39,7 +42,7 @@ const videoId = props.match.params.videoId
                         <video style={{width:'100%'}} src={`http://localhost:5000/${path}`} controls/>
                         {/* 구독, 좋아요, 작성자 */}
                         <List.Item
-                            actions
+                            actions={[<Subscribe userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')} />]}
                         >
                             <List.Item.Meta
                                 avatar={<Avatar src={VideoDetail.writer.image}/>}

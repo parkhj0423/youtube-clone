@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { Video } = require("../models/Video");
-
+const {Subscriber} = require('../models/Subscriber');
 const multer = require('multer');
 let ffmpeg = require('fluent-ffmpeg');
 
@@ -107,8 +107,45 @@ router.post('/getSideVideo',(req,res)=>{
             })
         }
     })
-    
 });
+
+
+router.post('/getSubscriptionVideos',(req,res)=>{
+    
+    // 자신의 userId(userFrom)로 구독하는 사람들을 찾는다
+    Subscriber.find({userFrom: req.body.userFrom})
+    .exec((err,subscriberInfo)=> {
+        if(err){
+            return res.status(400).send(err)
+        }
+        // subscriberInfo에서 userTo의 값만 따로 빼내어 subscribedUser에 저장
+        let subscribedUser = [];
+        subscriberInfo.map((subscriber,i)=> {
+            subscribedUser.push(subscriber.userTo)
+        })
+
+        //찾은 사람들의 비디오를 가지고옴
+        //TODO subscribedUser의 값이 1개가 아니기 때문에 req.body.userFrom.. 이런식으로 사용불가 
+        //TODO 몽고디비의 메소드인 $in: 을 사용하여 subscribedUser에 들어있는 모든 사람들의 ID를 가지고 writer을 다 찾음
+        Video.find({writer:{$in:subscribedUser}})
+        .populate('writer')
+        .exec((err,videos)=> {
+            if(err){
+                return res.status(400).send(err)
+            }
+            return res.status(200).json({success:true,videos})
+        })
+
+
+        
+    })
+
+
+    // 찾은 사람들의 비디오를 가지고 온다.
+});
+
+
+
 
 router.post('/thumbnail',(req,res)=>{
     // 썸네일 생성하고 비디오 러닝타임 가져오기 

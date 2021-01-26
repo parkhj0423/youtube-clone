@@ -68,7 +68,7 @@ function VideoDetailPage(props) {
                         <video style={{width:'100%'}} src={`http://localhost:5000/${path}`} controls/>
                         {/* 구독, 좋아요, 작성자 */}
                         <List.Item
-                            actions={[<LikeDislikes/> ,subscribeButton]}
+                            actions={[<LikeDislikes userId={localStorage.getItem('userId')} videoId={videoId}/> ,subscribeButton]}
                         >
                             <List.Item.Meta
                                 avatar={<Avatar src={VideoDetail.writer.image}/>}

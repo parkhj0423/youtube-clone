@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import { Comment, Avatar, Button, Input} from 'antd';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
+import LikeDislikes from './LikeDislikes';
 const {Textarea} = Input;
 
 
@@ -23,7 +24,8 @@ function SingleComment(props) {
     
 
     const actions = [
-        <span style={{cursor:'pointer'}}onClick={onClickReplyOpen} key='comment-basic-reply-to'>Reply to</span>
+        <LikeDislikes userId={localStorage.getItem('userId')} commentId={props.comment._id}/>,
+        <span style={{paddingLeft:'15px',cursor:'pointer'}}onClick={onClickReplyOpen} key='comment-basic-reply-to'>Reply to</span>
     ]
 
     const onSumbit = (event) => {

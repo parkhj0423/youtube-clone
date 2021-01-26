@@ -2,7 +2,7 @@
 import axios from 'axios'
 import React,{useEffect,useState} from 'react'
 import {message} from 'antd';
-
+import { withRouter } from 'react-router-dom';
 
 function Subscribe(props) {
 
@@ -94,4 +94,4 @@ function Subscribe(props) {
     )
 }
 
-export default Subscribe
+export default withRouter(Subscribe)

@@ -5,6 +5,7 @@ import SideVideo from './Sections/SideVideo'
 import Subscribe from './Sections/Subscribe';
 import Comment from './Sections/Comment';
 import LikeDislikes from './Sections/LikeDislikes';
+import VideoDeletePage from './Sections/VideoDeletePage';
 
 
 
@@ -59,7 +60,13 @@ function VideoDetailPage(props) {
         let path = VideoDetail.filePath.substr(6);
         // console.log(path);
 
-        const subscribeButton = VideoDetail.writer._id !==localStorage.getItem('userId') && <Subscribe userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')} />
+        let subscribeButton = VideoDetail.writer._id !==localStorage.getItem('userId') && <Subscribe userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')} />
+        if(VideoDetail.writer._id ===localStorage.getItem('userId')){
+            subscribeButton = <VideoDeletePage videoId={videoId}/>
+        }else {
+            subscribeButton = <Subscribe userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')} />
+        }
+
         return (
             <Row gutter={[16,16]}>
                 <Col lg={18} xs={24}>
@@ -78,8 +85,9 @@ function VideoDetailPage(props) {
                         </List.Item>
     
                         {/* 댓글 */}
+                        
                         <Comment refreshFunction={refreshFunction} commentLists={Comments} postId={videoId}/>
-    
+                               
                     </div>
     
                 </Col>

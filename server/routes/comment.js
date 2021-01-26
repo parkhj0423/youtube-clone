@@ -44,6 +44,18 @@ router.post('/getComments',(req,res)=> {
 
 })
 
+
+router.post('/deleteComment',(req,res)=> {
+    
+    Comment.findOneAndDelete({content: req.body.content})
+    .exec((err,result)=>{
+        if(err){
+            return res.status(400).send(err);
+        }
+        res.status(200).json({success:true,result})
+    })
+
+})
     
 
 

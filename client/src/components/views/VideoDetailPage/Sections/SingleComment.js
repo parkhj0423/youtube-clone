@@ -1,9 +1,10 @@
 import React,{useState} from 'react'
-import { Comment, Avatar, Button, Input} from 'antd';
+import { Comment, Avatar, Button,message} from 'antd';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import LikeDislikes from './LikeDislikes';
-const {Textarea} = Input;
+import {DeleteFilled} from '@ant-design/icons';
+import { withRouter } from 'react-router-dom';
 
 
 function SingleComment(props) {
@@ -21,11 +22,42 @@ function SingleComment(props) {
     const onClickReplyOpen = () => {
         setOpenReply(!OpenReply)
     }
+
+
+    //!
+    const deleteComment = () => {
+
+
+        let variables = {
+            content: props.comment.content,  
+            writer: localStorage.getItem('userId'),
+            postId: props.postId
+        }
+        console.log(props.comment.content)
+        console.log(props.comment.writer._id)
+        console.log(props.postId)
+        
+
+        if(props.comment.writer._id === localStorage.getItem('userId')){
+            axios.post('/api/comment/deleteComment',variables)
+            .then(response => {
+            if(response.data.success){
+                message.success('댓글 삭제 성공!')
+                window.location.reload()
+            }else { 
+                alert('댓글 삭제 실패!')
+            }
+        })
+        }else{
+            message.error('본인의 댓글만 지울 수 있습니다!')
+        }
+    }
     
 
     const actions = [
         <LikeDislikes userId={localStorage.getItem('userId')} commentId={props.comment._id}/>,
-        <span style={{paddingLeft:'15px',cursor:'pointer'}}onClick={onClickReplyOpen} key='comment-basic-reply-to'>Reply to</span>
+        <span style={{paddingLeft:'15px',cursor:'pointer'}}onClick={onClickReplyOpen} key='comment-basic-reply-to'>Reply to</span>,
+        <DeleteFilled onClick={deleteComment}/>
     ]
 
     const onSumbit = (event) => {
@@ -56,13 +88,14 @@ function SingleComment(props) {
 
     return (
         <div>
-            <Comment
-            actions={actions}
-            author={props.comment.writer.name}
-            avatar={<Avatar src={props.comment.writer.image}  alt='avatarImage'/>}
-            content={<p>{props.comment.content}</p>}
-            />
-
+            {props.comment.writer &&
+                <Comment
+                actions={actions}
+                author={props.comment.writer.name}
+                avatar={<Avatar src={props.comment.writer.image}  alt='avatarImage'/>}
+                content={<p>{props.comment.content}</p>}
+                />
+            }          
             {OpenReply &&
                 <form style={{display:'flex'}} onSubmit={onSumbit}>
                     <textarea 
@@ -80,4 +113,4 @@ function SingleComment(props) {
     )
 }
 
-export default SingleComment
+export default withRouter(SingleComment)

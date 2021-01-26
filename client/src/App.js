@@ -9,11 +9,13 @@ import Auth from './hoc/auth';
 import VideoUploadPage from './components/views/VideoUploadPage/VideoUploadPage';
 import VideoDetailPage from './components/views/VideoDetailPage/VideoDetailPage';
 import SubscriptionPage from './components/views/SubscriptionPage/SubscriptionPage';
+import SearchVideoPage from './components/views/SearchVideoPage/SearchVideoPage';
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
+
 
 
 
@@ -27,6 +29,7 @@ function App() {
       <div style={{ paddingTop: '69px', minHeight: 'calc(100vh - 80px)' }}>
         <Switch>
           <Route exact path="/" component={Auth(LandingPage,null)}/>
+          <Route exact path="/search" component={Auth(SearchVideoPage,null)}/>
           <Route exact path="/login" component={Auth(LoginPage,false)}/>
           <Route exact path="/register" component={Auth(RegisterPage,false)}/>
           <Route exact path="/video/upload" component={Auth(VideoUploadPage,true)}/>

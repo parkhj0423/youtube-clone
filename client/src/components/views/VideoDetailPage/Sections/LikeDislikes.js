@@ -2,6 +2,9 @@ import React,{useEffect,useState} from 'react'
 import {Tooltip} from 'antd'
 import {LikeOutlined,DislikeOutlined, LikeFilled, DislikeFilled} from '@ant-design/icons';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
+import {message} from 'antd'
+
 
 function LikeDislikes(props) {
 
@@ -64,6 +67,13 @@ function LikeDislikes(props) {
 
     const onLike = () => {
 
+        if(localStorage.getItem('userId') === ''){
+            return(
+            message.error('좋아요 기능은 로그인 후 사용할 수 있습니다'),
+            props.history.push('/login')
+            )
+        }
+
         if(LikeAction === null) {
             axios.post('/api/like/upLike',variable)
             .then(response => {
@@ -98,6 +108,14 @@ function LikeDislikes(props) {
 
 
     const onDislike =() => {
+
+        if(localStorage.getItem('userId') === ''){
+            return(
+            message.error('싫어요 기능은 로그인 후 사용할 수 있습니다'),
+            props.history.push('/login')
+            )
+        }
+
         if(DislikeAction === null){
             axios.post('/api/like/upDislike',variable)
             .then(response => {
@@ -152,4 +170,4 @@ function LikeDislikes(props) {
     )
 }
 
-export default LikeDislikes
+export default withRouter(LikeDislikes)

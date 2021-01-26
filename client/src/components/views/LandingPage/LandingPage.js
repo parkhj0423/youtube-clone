@@ -3,7 +3,6 @@ import axios from 'axios';
 import React,{useEffect,useState} from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
-
 const {Title} = Typography;
 const {Meta} = Card;
 
@@ -11,6 +10,7 @@ const {Meta} = Card;
 function LandingPage(props) {
 
     const [Video, setVideo] = useState([])
+    const [SearchValue, setSearchValue] = useState('')
 
     useEffect(() => {
         axios.get('/api/video/getVideos')
@@ -23,6 +23,10 @@ function LandingPage(props) {
             }
         })
     }, [])
+
+
+
+    
 
 
     const renderCards = Video.map((video,index)=> {
@@ -59,10 +63,12 @@ function LandingPage(props) {
     </Col>
         
     })
-
+    
     return (
         <div style={{width:'85%', margin:'3rem auto'}}>
-            <Title level={2}>Recomended</Title>
+            <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                <Title level={2}>Recomended</Title>
+            </div>
             <hr/>
             <Row gutter={[32,16]}>
 

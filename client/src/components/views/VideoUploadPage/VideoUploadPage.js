@@ -125,10 +125,10 @@ function VideoUploadPage(props) {
         axios.post('/api/video/uploadVideo',variables)
         .then(response => {
             if(response.data.success){
-                message.success('성공적으로 업로드를 했습니다'); //유용
+                message.success('성공적으로 업로드를 했습니다'); 
                 setTimeout(()=> {
                     props.history.push('/')
-                },3000)
+                },1500)
                 
             }else{
                 alert('비디오 업로드 실패!')

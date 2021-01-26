@@ -76,6 +76,26 @@ router.get('/getVideos',(req,res)=>{
 });
 
 
+router.post('/getSearchVideos',(req,res)=>{
+    
+    //비디오를 DB에서 가져온다.
+    Video.find({'title': req.body.title})
+    .populate('writer')
+    .exec((err,videos)=>{
+        if(err){
+            return res.status(400).send(err);
+        }
+        return res.status(200).json({
+            success:true,
+            videos
+        })
+    })
+});
+
+
+
+
+
 router.post('/getVideoDetail',(req,res)=>{
     
     //비디오를 DB에서 가져와 VideoDetailpage에 로드 한다.
@@ -183,6 +203,21 @@ router.post('/thumbnail',(req,res)=>{
         filename:'thumbnail-%b.png'
     })
 });
+
+
+
+router.post('/videoDelete',(req,res)=>{
+    Video.findOneAndDelete({_id: req.body.videoId})
+    .exec((err,result) => {
+        if(err){
+            return res.status(400).send(err)
+        }
+        return res.status(200).json({success: true})
+    })
+});
+
+
+
 
 
 module.exports = router;
